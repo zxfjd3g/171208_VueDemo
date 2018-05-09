@@ -2,8 +2,8 @@
   <div class="todo-container">
     <div class="todo-wrap">
       <TodoHeader :addTodo="addTodo"/>
-      <TodoList :todos="todos"/>
-      <TodoFooter/>
+      <TodoList :todos="todos" :deleteTodo="deleteTodo"/>
+      <TodoFooter :todos="todos" :deleteCompleteTodos="deleteCompleteTodos" :selectAll="selectAll"/>
     </div>
   </div>
 </template>
@@ -16,17 +16,39 @@
   export default {
     data () {
       return {
-        todos: [
-          {title: '吃饭', complete: false},
-          {title: '睡觉', complete: true},
-          {title: '玩手机', complete: false}
-        ]
+        todos: JSON.parse(localStorage.getItem('todos_key') || '[]')  // 读取localStorage保存的数据
       }
     },
 
     methods: {
       addTodo (todo) {
         this.todos.unshift(todo)
+      },
+
+      deleteTodo (index) {
+        this.todos.splice(index, 1)
+      },
+
+      // 删除所有已完成的
+      deleteCompleteTodos () {
+        this.todos = this.todos.filter(todo => !todo.complete)
+      },
+
+      // 全选/全不选
+      selectAll (isSelectAll) {
+        this.todos.forEach(todo => {
+          todo.complete = isSelectAll
+        })
+      }
+    },
+
+    watch: {
+      todos: {
+        deep: true, // 深度监视
+        handler: function (val) {
+          // 将数据(json)保存到localStorage
+          localStorage.setItem('todos_key', JSON.stringify(val))
+        }
       }
     },
 
