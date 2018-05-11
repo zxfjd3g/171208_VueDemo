@@ -1,8 +1,7 @@
 <template>
   <div class="todo-container">
     <div class="todo-wrap">
-      <!--<TodoHeader @addTodo="addTodo"/>-->
-      <TodoHeader ref="header"/>
+      <TodoHeader :addTodo="addTodo"/>
       <TodoList :todos="todos" :deleteTodo="deleteTodo"/>
       <TodoFooter :todos="todos" :deleteCompleteTodos="deleteCompleteTodos" :selectAll="selectAll"/>
     </div>
@@ -21,12 +20,6 @@
         // todos: JSON.parse(localStorage.getItem('todos_key') || '[]')  // 读取localStorage保存的数据
         todos: storageUtils.readTodos()
       }
-    },
-
-    mounted () {
-      // 绑定自定义事件(addTodo)监听
-      // this.$on('addTodo',  this.addTodo) 绑定监听的目标不对
-      this.$refs.header.$on('addTodo',  this.addTodo)
     },
 
     methods: {

@@ -6,6 +6,12 @@
 
 <script>
   export default {
+    props: {
+      addTodo: { // 指定属性名, 属性值的类型, 必要性
+        type: Function,
+        required: true
+      }
+    },
     data () {
       return {
         inputTodo: ''
@@ -26,8 +32,7 @@
           complete: false
         }
         // 添加到todos中显示
-        /*触发自定义事件: addTodo*/
-        this.$emit('addTodo', todo)
+        this.addTodo(todo)
         // 清除输入
         this.inputTodo = ''
       }
